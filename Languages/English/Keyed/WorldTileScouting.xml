@@ -2,7 +2,7 @@
 <LanguageData>
 
   <WTS_CommandScout>Scout</WTS_CommandScout>
-  <WTS_CommandScoutDesc>Begin remote scouting of this tile. After one day, receive an expected force summary from faction doctrine and PawnKind data.</WTS_CommandScoutDesc>
+  <WTS_CommandScoutDesc>Begin remote scouting of this tile. After one day, receive an expected force summary from site threat patterns (faction roster, mechanoids, manhunters, anomaly, etc.).</WTS_CommandScoutDesc>
   <WTS_CommandViewIntel>Scout report</WTS_CommandViewIntel>
   <WTS_CommandViewIntelDesc>Open the stored scouting summary for this tile.</WTS_CommandViewIntelDesc>
   <WTS_ScoutInProgress>Scouting… ({0} left)</WTS_ScoutInProgress>
@@ -12,21 +12,43 @@
   <WTS_ScoutFailedGone>Scouting of {0} failed — the target is gone.</WTS_ScoutFailedGone>
   <WTS_ScoutFailedChanged>Scouting of {0} failed — site data changed during observation.</WTS_ScoutFailedChanged>
   <WTS_LetterLabel>Scout report ready</WTS_LetterLabel>
-  <WTS_LetterText>Scouting of {0} is finished.\n\nYou now have an expected force summary (ranged/melee mix, armor and weapon tags from faction doctrine).\n\nOpen the attached report before deciding whether to raid.</WTS_LetterText>
+  <WTS_LetterText>Scouting of {0} is finished.\n\nYou now have an expected force summary (combat mix, gear samples when relevant, kinds).\n\nOpen the attached report before deciding whether to raid.</WTS_LetterText>
   <WTS_ScoutCompleteMsg>Scout report ready: {0}</WTS_ScoutCompleteMsg>
 
   <WTS_Fail_NoTarget>No target.</WTS_Fail_NoTarget>
   <WTS_Fail_NeedResearch>Requires world tile scouting research.</WTS_Fail_NeedResearch>
   <WTS_Fail_NoHostiles>Only non-player inhabited sites can be scouted.</WTS_Fail_NoHostiles>
   <WTS_Fail_NoRosterData>This faction has no usable roster data.</WTS_Fail_NoRosterData>
-  <WTS_Fail_NoInhabitants>No expected inhabitants at this site.</WTS_Fail_NoInhabitants>
+  <WTS_Fail_NoInhabitants>No scoutable threat signals on this site.</WTS_Fail_NoInhabitants>
   <WTS_Fail_Unsupported>This world object cannot be scouted.</WTS_Fail_Unsupported>
 
   <WTS_ReportTitle>Scout report — {0}</WTS_ReportTitle>
   <WTS_ReportFaction>Faction: {0}</WTS_ReportFaction>
+  <WTS_ReportSignalFaction>Distress signal from: {0}</WTS_ReportSignalFaction>
   <WTS_ReportExpected>Expected headcount: {0}</WTS_ReportExpected>
+  <WTS_ReportExpectedThreats>Estimated threat count: {0}</WTS_ReportExpectedThreats>
   <WTS_ReportFreshness>Intel valid ~{0} day(s)</WTS_ReportFreshness>
-  <WTS_ReportDisclaimer>Expected roster from faction/PawnKind analysis. Not a live map scan of individual pawns.</WTS_ReportDisclaimer>
+  <WTS_ReportDisclaimer>Expected roster from site threat patterns / PawnGroupMaker examples. Not a live map scan.</WTS_ReportDisclaimer>
+  <WTS_ReportDisclaimerSpecial>Estimated threat pattern — may omit delayed ambushes or post-arrival spawns. Not a live ESP.</WTS_ReportDisclaimerSpecial>
+
+  <WTS_ModeDistressCall>Distress / anomaly pattern: camp faction usually dead; primary living threat from entities (fleshbeasts), not the signal faction roster.</WTS_ModeDistressCall>
+  <WTS_ModeManhunters>Manhunter pack pattern: aggressive animals from site animal kind / points.</WTS_ModeManhunters>
+  <WTS_ModeSleepingMechanoids>Sleeping mechanoids pattern: Mechanoid combat group from threat points.</WTS_ModeSleepingMechanoids>
+  <WTS_ModeMechCluster>Mech cluster pattern: mechanoid combat estimate from threat points (not the site faction).</WTS_ModeMechCluster>
+  <WTS_ModeMechanoidRelay>Mechanoid relay pattern: mechanoid presence estimated from threat points.</WTS_ModeMechanoidRelay>
+  <WTS_ModeInsects>Insect lair pattern: insect combat group from threat points.</WTS_ModeInsects>
+  <WTS_ModeTurrets>Turret site pattern: automated defenses plus possible faction guards.</WTS_ModeTurrets>
+  <WTS_ModeWorkSite>Work site pattern: workers and fighters from faction doctrine.</WTS_ModeWorkSite>
+  <WTS_ModeConditionCauser>Condition-causer site: primary threat is the structure/condition, not a pawn roster.</WTS_ModeConditionCauser>
+  <WTS_ModeComplex>Ancient complex pattern: layout threats; roster approximate if available.</WTS_ModeComplex>
+  <WTS_ModeAmbush>Ambush / hidden threat: composition is deferred until map entry — points only.</WTS_ModeAmbush>
+  <WTS_ModeAbandoned>Abandoned settlement pattern: no living faction defenders expected from gen steps.</WTS_ModeAbandoned>
+  <WTS_ModeUnknown>Unrecognized site threat pattern — showing points-based / empty estimate.</WTS_ModeUnknown>
+
+  <WTS_EmptyAbandoned>No living defenders expected</WTS_EmptyAbandoned>
+  <WTS_EmptyConditionCauser>Structure / condition threat</WTS_EmptyConditionCauser>
+  <WTS_EmptyAmbush>Ambush deferred until entry</WTS_EmptyAmbush>
+
   <WTS_SectionCombat>Combat mix</WTS_SectionCombat>
   <WTS_SectionArmor>Armor</WTS_SectionArmor>
   <WTS_SectionWeapons>Weapons</WTS_SectionWeapons>
@@ -35,10 +57,12 @@
   <WTS_Melee>Melee</WTS_Melee>
   <WTS_ArmorYes>Armor expected: yes</WTS_ArmorYes>
   <WTS_ArmorNo>Armor expected: no / negligible</WTS_ArmorNo>
-  <WTS_ArmorTags>Armor tags</WTS_ArmorTags>
+  <WTS_ArmorSamples>Likely armor</WTS_ArmorSamples>
   <WTS_ArmorCats>Armor categories</WTS_ArmorCats>
-  <WTS_WeaponTags>Weapon tags</WTS_WeaponTags>
+  <WTS_WeaponSamples>Likely weapons</WTS_WeaponSamples>
   <WTS_WeaponCats>Weapon categories</WTS_WeaponCats>
+  <WTS_CategoryExamples>Examples:</WTS_CategoryExamples>
+  <WTS_ClickForInfoCard>Click for details</WTS_ClickForInfoCard>
   <WTS_None>—</WTS_None>
   <WTS_UnknownRoster>Unknown roster</WTS_UnknownRoster>
   <WTS_InspectPending>Scouting in progress ({0} left)</WTS_InspectPending>

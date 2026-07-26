@@ -13,19 +13,6 @@ public static class ScoutIntelAnalyzer
 
 	public static ScoutIntel Analyze(WorldObject obj)
 	{
-		var kinds = new List<PawnKindDef>();
-		foreach (var parms in ScoutTargetUtility.BuildGroupParms(obj))
-		{
-			try
-			{
-				kinds.AddRange(PawnGroupMakerUtility.GeneratePawnKindsExample(parms));
-			}
-			catch
-			{
-				// Некоторые модовые фракции могут не иметь подходящего group maker.
-			}
-		}
-
 		var intel = new ScoutIntel
 		{
 			worldObjectId = obj.ID,
@@ -33,41 +20,156 @@ public static class ScoutIntelAnalyzer
 			targetLabel = obj.LabelCap,
 			factionName = obj.Faction?.Name ?? string.Empty,
 			createdTick = Find.TickManager.TicksGame,
-			expireTick = Find.TickManager.TicksGame + GenDate.TicksPerDay * IntelLifetimeDays,
-			expectedCount = kinds.Count
+			expireTick = Find.TickManager.TicksGame + GenDate.TicksPerDay * IntelLifetimeDays
 		};
 
-		if (kinds.Count == 0)
+		var contributions = SiteThreatResolver.Resolve(obj);
+		var allKinds = new List<PawnKindDef>();
+		bool anyGear = false;
+		ScoutThreatMode primary = ScoutThreatMode.Unknown;
+		string? banner = null;
+		int modePriority = -1;
+
+		foreach (var c in contributions)
+		{
+			allKinds.AddRange(c.kinds);
+			if (c.includeGearSamples)
+				anyGear = true;
+			int p = ModePriority(c.mode);
+			if (p > modePriority)
+			{
+				modePriority = p;
+				primary = c.mode;
+				banner = c.noteKey;
+			}
+			else if (banner == null && !c.noteKey.NullOrEmpty())
+			{
+				banner = c.noteKey;
+			}
+		}
+
+		intel.threatMode = primary;
+		intel.modeBannerKey = banner ?? DefaultBannerKey(primary);
+		intel.expectedCount = allKinds.Count;
+
+		if (allKinds.Count == 0)
 		{
 			intel.kindBreakdown.Add(new ScoutIntel.KindCount
 			{
-				label = "WTS_UnknownRoster".Translate(),
+				label = EmptyLabel(primary),
 				count = 0
 			});
+			ApplyEmptyCombatProfile(intel, primary);
 			return intel;
 		}
 
+		if (anyGear && primary is ScoutThreatMode.FactionRoster or ScoutThreatMode.Mechanoids or ScoutThreatMode.Turrets or ScoutThreatMode.Complex)
+			FillFromKinds(intel, allKinds, includeGear: true);
+		else
+			FillFromKinds(intel, allKinds, includeGear: false);
+
+		return intel;
+	}
+
+	private static int ModePriority(ScoutThreatMode mode) => mode switch
+	{
+		ScoutThreatMode.Fleshbeasts => 100,
+		ScoutThreatMode.Manhunters => 90,
+		ScoutThreatMode.Mechanoids => 85,
+		ScoutThreatMode.Insects => 84,
+		ScoutThreatMode.AmbushDeferred => 70,
+		ScoutThreatMode.ConditionCauser => 60,
+		ScoutThreatMode.Complex => 55,
+		ScoutThreatMode.Turrets => 50,
+		ScoutThreatMode.Abandoned => 40,
+		ScoutThreatMode.FactionRoster => 30,
+		_ => 0
+	};
+
+	private static string DefaultBannerKey(ScoutThreatMode mode) => mode switch
+	{
+		ScoutThreatMode.Fleshbeasts => "WTS_ModeDistressCall",
+		ScoutThreatMode.Manhunters => "WTS_ModeManhunters",
+		ScoutThreatMode.Mechanoids => "WTS_ModeSleepingMechanoids",
+		ScoutThreatMode.Insects => "WTS_ModeInsects",
+		ScoutThreatMode.AmbushDeferred => "WTS_ModeAmbush",
+		ScoutThreatMode.ConditionCauser => "WTS_ModeConditionCauser",
+		ScoutThreatMode.Complex => "WTS_ModeComplex",
+		ScoutThreatMode.Abandoned => "WTS_ModeAbandoned",
+		ScoutThreatMode.Turrets => "WTS_ModeTurrets",
+		ScoutThreatMode.Unknown => "WTS_ModeUnknown",
+		_ => string.Empty
+	};
+
+	private static string EmptyLabel(ScoutThreatMode mode) => mode switch
+	{
+		ScoutThreatMode.Abandoned => "WTS_EmptyAbandoned".Translate(),
+		ScoutThreatMode.ConditionCauser => "WTS_EmptyConditionCauser".Translate(),
+		ScoutThreatMode.AmbushDeferred => "WTS_EmptyAmbush".Translate(),
+		ScoutThreatMode.Unknown => "WTS_UnknownRoster".Translate(),
+		_ => "WTS_UnknownRoster".Translate()
+	};
+
+	private static void ApplyEmptyCombatProfile(ScoutIntel intel, ScoutThreatMode mode)
+	{
+		intel.hasArmor = false;
+		intel.armorSamples.Clear();
+		intel.weaponSamples.Clear();
+		intel.armorCategories.Clear();
+		intel.weaponCategories.Clear();
+		switch (mode)
+		{
+			case ScoutThreatMode.Fleshbeasts:
+			case ScoutThreatMode.Manhunters:
+			case ScoutThreatMode.Insects:
+				intel.rangedShare = 0.15f;
+				intel.meleeShare = 0.85f;
+				break;
+			case ScoutThreatMode.Mechanoids:
+				intel.rangedShare = 0.7f;
+				intel.meleeShare = 0.3f;
+				break;
+			default:
+				intel.rangedShare = 0f;
+				intel.meleeShare = 0f;
+				break;
+		}
+	}
+
+	private static void FillFromKinds(ScoutIntel intel, List<PawnKindDef> kinds, bool includeGear)
+	{
 		intel.kindBreakdown = kinds
-			.GroupBy(k => k.LabelCap.Resolve())
-			.Select(g => new ScoutIntel.KindCount { label = g.Key, count = g.Count() })
+			.GroupBy(k => k.defName)
+			.Select(g => new ScoutIntel.KindCount
+			{
+				defName = g.Key,
+				label = g.First().LabelCap.Resolve(),
+				count = g.Count()
+			})
 			.OrderByDescending(k => k.count)
 			.ThenBy(k => k.label)
 			.ToList();
 
 		float rangedWeight = 0f;
 		float meleeWeight = 0f;
-		var armorTagWeights = new Dictionary<string, float>();
-		var armorCatWeights = new Dictionary<string, float>();
-		var weaponTagWeights = new Dictionary<string, float>();
-		var weaponCatWeights = new Dictionary<string, float>();
+		var armorDefWeights = new Dictionary<ThingDef, float>();
+		var armorCatWeights = new Dictionary<ThingCategoryDef, float>();
+		var weaponDefWeights = new Dictionary<ThingDef, float>();
+		var weaponCatWeights = new Dictionary<ThingCategoryDef, float>();
 		var armorPresent = false;
 
 		foreach (var kind in kinds)
 		{
-			var weapons = CandidateWeapons(kind).ToList();
+			var weapons = includeGear ? CandidateWeapons(kind).ToList() : new List<ThingDef>();
 			if (weapons.Count == 0)
 			{
-				meleeWeight += 1f;
+				// Существа без оружия / без тегов — ближний профиль
+				if (kind.race?.race != null && !kind.race.race.Humanlike)
+					meleeWeight += 1f;
+				else if (!includeGear)
+					meleeWeight += 0.85f;
+				else
+					meleeWeight += 1f;
 			}
 			else
 			{
@@ -79,49 +181,30 @@ public static class ScoutIntelAnalyzer
 
 				foreach (var weapon in weapons)
 				{
-					if (weapon.weaponTags != null)
-					{
-						foreach (var tag in weapon.weaponTags)
-							AddWeight(weaponTagWeights, PrettyTag(tag), 1f / weapons.Count);
-					}
-
+					AddWeight(weaponDefWeights, weapon, 1f / weapons.Count);
 					if (weapon.thingCategories != null)
 					{
 						foreach (var cat in weapon.thingCategories)
-							AddWeight(weaponCatWeights, cat.LabelCap.Resolve(), 1f / weapons.Count);
+							AddWeight(weaponCatWeights, cat, 1f / weapons.Count);
 					}
 				}
 			}
+
+			if (!includeGear)
+				continue;
 
 			var apparel = CandidateApparel(kind).ToList();
 			foreach (var app in apparel)
 			{
 				bool armored = IsArmoredApparel(app);
-				if (armored)
-					armorPresent = true;
-
-				if (app.apparel?.tags != null)
-				{
-					foreach (var tag in app.apparel.tags)
-					{
-						if (armored || LooksLikeArmorTag(tag))
-							AddWeight(armorTagWeights, PrettyTag(tag), 1f / Mathf.Max(1, apparel.Count));
-					}
-				}
-
-				if (armored && app.thingCategories != null)
+				if (!armored)
+					continue;
+				armorPresent = true;
+				AddWeight(armorDefWeights, app, 1f / Mathf.Max(1, apparel.Count));
+				if (app.thingCategories != null)
 				{
 					foreach (var cat in app.thingCategories)
-						AddWeight(armorCatWeights, cat.LabelCap.Resolve(), 1f / Mathf.Max(1, apparel.Count));
-				}
-			}
-
-			if (!armorPresent && kind.apparelRequired != null)
-			{
-				foreach (var req in kind.apparelRequired)
-				{
-					if (IsArmoredApparel(req))
-						armorPresent = true;
+						AddWeight(armorCatWeights, cat, 1f / Mathf.Max(1, apparel.Count));
 				}
 			}
 		}
@@ -130,11 +213,20 @@ public static class ScoutIntelAnalyzer
 		intel.rangedShare = rangedWeight / combatTotal;
 		intel.meleeShare = meleeWeight / combatTotal;
 		intel.hasArmor = armorPresent;
-		intel.armorTags = TopLabels(armorTagWeights, 8);
-		intel.armorCategories = TopLabels(armorCatWeights, 8);
-		intel.weaponTags = TopLabels(weaponTagWeights, 10);
-		intel.weaponCategories = TopLabels(weaponCatWeights, 10);
-		return intel;
+		if (includeGear)
+		{
+			intel.armorSamples = TopDefs(armorDefWeights, 8);
+			intel.weaponSamples = TopDefs(weaponDefWeights, 10);
+			intel.armorCategories = TopCats(armorCatWeights, 8);
+			intel.weaponCategories = TopCats(weaponCatWeights, 10);
+		}
+		else
+		{
+			intel.armorSamples.Clear();
+			intel.weaponSamples.Clear();
+			intel.armorCategories.Clear();
+			intel.weaponCategories.Clear();
+		}
 	}
 
 	private static IEnumerable<ThingDef> CandidateWeapons(PawnKindDef kind)
@@ -197,48 +289,20 @@ public static class ScoutIntelAnalyzer
 				return true;
 		}
 
-		if (def.apparel.tags != null && def.apparel.tags.Any(LooksLikeArmorTag))
-			return true;
-
 		return def.thingCategories != null && def.thingCategories.Any(c =>
 			c.defName.IndexOf("Armor", System.StringComparison.OrdinalIgnoreCase) >= 0
 			|| c.defName.IndexOf("Flak", System.StringComparison.OrdinalIgnoreCase) >= 0);
 	}
 
-	private static bool LooksLikeArmorTag(string tag)
+	private static void AddWeight<T>(Dictionary<T, float> map, T key, float amount) where T : notnull
 	{
-		if (tag.NullOrEmpty())
-			return false;
-		return tag.IndexOf("Armor", System.StringComparison.OrdinalIgnoreCase) >= 0
-			|| tag.IndexOf("Flak", System.StringComparison.OrdinalIgnoreCase) >= 0
-			|| tag.IndexOf("Marine", System.StringComparison.OrdinalIgnoreCase) >= 0
-			|| tag.IndexOf("Plate", System.StringComparison.OrdinalIgnoreCase) >= 0
-			|| tag.IndexOf("Cataphract", System.StringComparison.OrdinalIgnoreCase) >= 0
-			|| tag.IndexOf("Prestige", System.StringComparison.OrdinalIgnoreCase) >= 0;
-	}
-
-	private static void AddWeight(Dictionary<string, float> map, string key, float amount)
-	{
-		if (key.NullOrEmpty())
-			return;
 		map.TryGetValue(key, out float cur);
 		map[key] = cur + amount;
 	}
 
-	private static List<string> TopLabels(Dictionary<string, float> weights, int take)
-	{
-		return weights
-			.OrderByDescending(kv => kv.Value)
-			.ThenBy(kv => kv.Key)
-			.Take(take)
-			.Select(kv => kv.Key)
-			.ToList();
-	}
+	private static List<ThingDef> TopDefs(Dictionary<ThingDef, float> weights, int take) =>
+		weights.OrderByDescending(kv => kv.Value).ThenBy(kv => kv.Key.label).Take(take).Select(kv => kv.Key).ToList();
 
-	private static string PrettyTag(string tag)
-	{
-		if (tag.NullOrEmpty())
-			return tag;
-		return tag.Replace('_', ' ');
-	}
+	private static List<ThingCategoryDef> TopCats(Dictionary<ThingCategoryDef, float> weights, int take) =>
+		weights.OrderByDescending(kv => kv.Value).ThenBy(kv => kv.Key.label).Take(take).Select(kv => kv.Key).ToList();
 }

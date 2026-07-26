@@ -6,7 +6,7 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>After ground-penetrating scanner research, remotely scout enemy settlements, work sites, and inhabited camps on the world map. After one day you get an expected roster summary (ranged/melee mix, armor tags, weapon categories) derived from faction/PawnKind data — not a live map ESP. Intel persists until raid/attack, roster fingerprint change, or expiry. Does not hard-depend on Odyssey or other DLC.</description>
+  <description>After ground-penetrating scanner research, remotely scout world sites and settlements. Reports use site threat patterns (faction outpost/work site, mechanoids, manhunters, anomaly distress, ambush deferred, etc.) via PawnGroupMaker examples — not live map ESP and not a hardcoded quest list. Intel lasts until raid, fingerprint change, or expiry. Hard-depends only on Harmony; Anomaly/Royalty/Odyssey patterns activate when those DLCs are present.</description>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>

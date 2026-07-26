@@ -9,8 +9,10 @@ namespace WorldTileScouting;
 
 public static class ScoutCommands
 {
-	private static readonly Texture2D ScoutTex =
-		ContentFinder<Texture2D>.Get("Things/Building/Misc/LongRangeMineralScanner");
+	private static readonly Texture2D ScoutTex = ContentFinder<Texture2D>.Get("UI/Commands/WTS_Scout", reportFailure: false)
+		?? BaseContent.BadTex;
+	private static readonly Texture2D ReportTex = ContentFinder<Texture2D>.Get("UI/Commands/WTS_ScoutReport", reportFailure: false)
+		?? BaseContent.BadTex;
 
 	public static IEnumerable<Gizmo> GetGizmos(WorldObject obj)
 	{
@@ -29,7 +31,7 @@ public static class ScoutCommands
 			{
 				defaultLabel = "WTS_CommandViewIntel".Translate(),
 				defaultDesc = "WTS_CommandViewIntelDesc".Translate(),
-				icon = ScoutTex,
+				icon = ReportTex,
 				action = () => Find.WindowStack.Add(new Dialog_ScoutIntel(intel, obj))
 			};
 			yield break;
