@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>WorldTileScouting</defName>
+    <label>world tile scouting</label>
+    <description>Develop remote observation protocols that combine long-range sensor work with faction doctrine analysis. Once researched, you can order a scout of an enemy settlement, work site, or inhabited camp on the world map. After one day of processing, you receive an expected force summary — combat mix, armor tags, and weapon categories — without revealing living pawns on an ungenerated map.</description>
+    <baseCost>1200</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>GroundPenetratingScanner</li>
+    </prerequisites>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <researchViewX>15.00</researchViewX>
+    <researchViewY>4.20</researchViewY>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->orbital scouting doctrine</li>
+        <li>subject->remote force analysis</li>
+        <li>subject_story->mapped a pirate outpost from sensor ghosts alone</li>
+        <li>subject_story->predicted a tribal warband's kit from doctrine scraps</li>
+        <li>subject_gerund->scouting distant tiles</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+</Defs>

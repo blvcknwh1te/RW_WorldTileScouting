@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <WTS_CommandScout>Scout</WTS_CommandScout>
+  <WTS_CommandScoutDesc>Begin remote scouting of this tile. After one day, receive an expected force summary from faction doctrine and PawnKind data.</WTS_CommandScoutDesc>
+  <WTS_CommandViewIntel>Scout report</WTS_CommandViewIntel>
+  <WTS_CommandViewIntelDesc>Open the stored scouting summary for this tile.</WTS_CommandViewIntelDesc>
+  <WTS_ScoutInProgress>Scouting… ({0} left)</WTS_ScoutInProgress>
+  <WTS_ScoutStarted>Scouting {0}. Report expected in one day.</WTS_ScoutStarted>
+  <WTS_AlreadyScouting>Already scouting {0}.</WTS_AlreadyScouting>
+  <WTS_IntelAlreadyFresh>Fresh intel already available for {0}.</WTS_IntelAlreadyFresh>
+  <WTS_ScoutFailedGone>Scouting of {0} failed — the target is gone.</WTS_ScoutFailedGone>
+  <WTS_ScoutFailedChanged>Scouting of {0} failed — site data changed during observation.</WTS_ScoutFailedChanged>
+  <WTS_LetterLabel>Scout report ready</WTS_LetterLabel>
+  <WTS_LetterText>Scouting of {0} is finished.\n\nYou now have an expected force summary (ranged/melee mix, armor and weapon tags from faction doctrine).\n\nOpen the attached report before deciding whether to raid.</WTS_LetterText>
+  <WTS_ScoutCompleteMsg>Scout report ready: {0}</WTS_ScoutCompleteMsg>
+
+  <WTS_Fail_NoTarget>No target.</WTS_Fail_NoTarget>
+  <WTS_Fail_NeedResearch>Requires world tile scouting research.</WTS_Fail_NeedResearch>
+  <WTS_Fail_NoHostiles>Only non-player inhabited sites can be scouted.</WTS_Fail_NoHostiles>
+  <WTS_Fail_NoRosterData>This faction has no usable roster data.</WTS_Fail_NoRosterData>
+  <WTS_Fail_NoInhabitants>No expected inhabitants at this site.</WTS_Fail_NoInhabitants>
+  <WTS_Fail_Unsupported>This world object cannot be scouted.</WTS_Fail_Unsupported>
+
+  <WTS_ReportTitle>Scout report — {0}</WTS_ReportTitle>
+  <WTS_ReportFaction>Faction: {0}</WTS_ReportFaction>
+  <WTS_ReportExpected>Expected headcount: {0}</WTS_ReportExpected>
+  <WTS_ReportFreshness>Intel valid ~{0} day(s)</WTS_ReportFreshness>
+  <WTS_ReportDisclaimer>Expected roster from faction/PawnKind analysis. Not a live map scan of individual pawns.</WTS_ReportDisclaimer>
+  <WTS_SectionCombat>Combat mix</WTS_SectionCombat>
+  <WTS_SectionArmor>Armor</WTS_SectionArmor>
+  <WTS_SectionWeapons>Weapons</WTS_SectionWeapons>
+  <WTS_SectionKinds>Expected kinds</WTS_SectionKinds>
+  <WTS_Ranged>Ranged</WTS_Ranged>
+  <WTS_Melee>Melee</WTS_Melee>
+  <WTS_ArmorYes>Armor expected: yes</WTS_ArmorYes>
+  <WTS_ArmorNo>Armor expected: no / negligible</WTS_ArmorNo>
+  <WTS_ArmorTags>Armor tags</WTS_ArmorTags>
+  <WTS_ArmorCats>Armor categories</WTS_ArmorCats>
+  <WTS_WeaponTags>Weapon tags</WTS_WeaponTags>
+  <WTS_WeaponCats>Weapon categories</WTS_WeaponCats>
+  <WTS_None>—</WTS_None>
+  <WTS_UnknownRoster>Unknown roster</WTS_UnknownRoster>
+  <WTS_InspectPending>Scouting in progress ({0} left)</WTS_InspectPending>
+  <WTS_InspectReady>Scout intel available</WTS_InspectReady>
+
+</LanguageData>

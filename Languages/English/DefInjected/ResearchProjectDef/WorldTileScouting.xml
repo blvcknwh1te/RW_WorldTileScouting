@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <WorldTileScouting.label>world tile scouting</WorldTileScouting.label>
+  <WorldTileScouting.description>Develop remote observation protocols that combine long-range sensor work with faction doctrine analysis. Once researched, you can order a scout of an enemy settlement, work site, or inhabited camp on the world map. After one day of processing, you receive an expected force summary — combat mix, armor tags, and weapon categories — without revealing living pawns on an ungenerated map.</WorldTileScouting.description>
+</LanguageData>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>World Tile Scouting</name>
+  <author>local</author>
+  <packageId>local.WorldTileScouting</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>After ground-penetrating scanner research, remotely scout enemy settlements, work sites, and inhabited camps on the world map. After one day you get an expected roster summary (ranged/melee mix, armor tags, weapon categories) derived from faction/PawnKind data — not a live map ESP. Intel persists until raid/attack, roster fingerprint change, or expiry. Does not hard-depend on Odyssey or other DLC.</description>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+</ModMetaData>
