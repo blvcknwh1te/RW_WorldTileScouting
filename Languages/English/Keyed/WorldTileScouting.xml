@@ -8,6 +8,12 @@
   <WTS_ScoutInProgress>Scouting… ({0} left)</WTS_ScoutInProgress>
   <WTS_ScoutStarted>Scouting {0}. Report expected in one day.</WTS_ScoutStarted>
   <WTS_AlreadyScouting>Already scouting {0}.</WTS_AlreadyScouting>
+  <WTS_ScoutCapacityFull>Scout capacity full ({0}/{1}). Need more colonists (now {2}) or wait for a report.</WTS_ScoutCapacityFull>
+  <WTS_ScoutCapacityStatus>Concurrent scouts: {0}/{1} (colonists: {2})</WTS_ScoutCapacityStatus>
+  <WTS_SettingsCategory>World Tile Scouting</WTS_SettingsCategory>
+  <WTS_ColonistsPerSlot>Colonists per concurrent scout slot: {0}</WTS_ColonistsPerSlot>
+  <WTS_ColonistsPerSlotTip>Max simultaneous scouts = ceil(colonists ÷ {0}). Current: {1} slot(s) with {2} colonist(s). Minimum 1.</WTS_ColonistsPerSlotTip>
+  <WTS_ResetDefaults>Reset to defaults</WTS_ResetDefaults>
   <WTS_IntelAlreadyFresh>Fresh intel already available for {0}.</WTS_IntelAlreadyFresh>
   <WTS_ScoutFailedGone>Scouting of {0} failed — the target is gone.</WTS_ScoutFailedGone>
   <WTS_ScoutFailedChanged>Scouting of {0} failed — site data changed during observation.</WTS_ScoutFailedChanged>

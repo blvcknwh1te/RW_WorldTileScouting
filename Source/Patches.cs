@@ -40,7 +40,8 @@ public static class ScoutCommands
 		var cmd = new Command_Action
 		{
 			defaultLabel = "WTS_CommandScout".Translate(),
-			defaultDesc = "WTS_CommandScoutDesc".Translate(),
+			defaultDesc = "WTS_CommandScoutDesc".Translate() + "\n\n" +
+				"WTS_ScoutCapacityStatus".Translate(comp.PendingCount, ScoutQuota.MaxConcurrent(), ScoutQuota.ColonistCount()),
 			icon = ScoutTex,
 			action = () => comp.StartScout(obj)
 		};
@@ -49,6 +50,11 @@ public static class ScoutCommands
 		{
 			int ticks = comp.PendingTicksLeft(obj);
 			cmd.Disable("WTS_ScoutInProgress".Translate(ticks.ToStringTicksToPeriod()));
+		}
+		else if (comp.AtScoutCapacity)
+		{
+			cmd.Disable("WTS_ScoutCapacityFull".Translate(
+				comp.PendingCount, ScoutQuota.MaxConcurrent(), ScoutQuota.ColonistCount()));
 		}
 
 		yield return cmd;
@@ -77,6 +83,15 @@ public static class ScoutCommands
 		{
 			yield return new FloatMenuOption(
 				"WTS_ScoutInProgress".Translate(comp.PendingTicksLeft(obj).ToStringTicksToPeriod()),
+				null);
+			yield break;
+		}
+
+		if (comp.AtScoutCapacity)
+		{
+			yield return new FloatMenuOption(
+				"WTS_ScoutCapacityFull".Translate(
+					comp.PendingCount, ScoutQuota.MaxConcurrent(), ScoutQuota.ColonistCount()),
 				null);
 			yield break;
 		}

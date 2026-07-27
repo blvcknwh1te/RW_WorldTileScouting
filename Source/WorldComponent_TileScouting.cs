@@ -84,6 +84,10 @@ public class WorldComponent_TileScouting : WorldComponent
 	public bool IsPending(WorldObject obj) =>
 		pending.Any(p => p.worldObjectId == obj.ID);
 
+	public int PendingCount => pending.Count;
+
+	public bool AtScoutCapacity => PendingCount >= ScoutQuota.MaxConcurrent();
+
 	public int PendingTicksLeft(WorldObject obj)
 	{
 		var job = pending.FirstOrDefault(p => p.worldObjectId == obj.ID);
@@ -109,6 +113,15 @@ public class WorldComponent_TileScouting : WorldComponent
 		if (TryGetIntel(obj, out _))
 		{
 			Messages.Message("WTS_IntelAlreadyFresh".Translate(obj.LabelCap), MessageTypeDefOf.NeutralEvent, historical: false);
+			return;
+		}
+
+		if (AtScoutCapacity)
+		{
+			Messages.Message(
+				"WTS_ScoutCapacityFull".Translate(PendingCount, ScoutQuota.MaxConcurrent(), ScoutQuota.ColonistCount()),
+				MessageTypeDefOf.RejectInput,
+				historical: false);
 			return;
 		}
 

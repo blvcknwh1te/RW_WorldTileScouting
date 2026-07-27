@@ -6,7 +6,7 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>After ground-penetrating scanner research, remotely scout world sites and settlements. Reports use site threat patterns (faction outpost/work site, mechanoids, manhunters, anomaly distress, ambush deferred, etc.) via PawnGroupMaker examples — not live map ESP and not a hardcoded quest list. Intel lasts until raid, fingerprint change, or expiry. Hard-depends only on Harmony; Anomaly/Royalty/Odyssey patterns activate when those DLCs are present.</description>
+  <description>After ground-penetrating scanner research, remotely scout world sites and settlements. Reports use site threat patterns (faction outpost/work site, mechanoids, manhunters, anomaly distress, ambush deferred, etc.) via PawnGroupMaker examples — not live map ESP and not a hardcoded quest list. Concurrent scouts are capped at ceil(free colonists ÷ N) (min 1; N configurable, default 5). Intel lasts until raid, fingerprint change, or expiry. Hard-depends only on Harmony; Anomaly/Royalty/Odyssey patterns activate when those DLCs are present.</description>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>

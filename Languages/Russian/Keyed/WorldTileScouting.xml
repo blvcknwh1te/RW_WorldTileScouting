@@ -8,6 +8,12 @@
   <WTS_ScoutInProgress>Идёт разведка… (осталось {0})</WTS_ScoutInProgress>
   <WTS_ScoutStarted>Разведка {0}. Отчёт ожидается через день.</WTS_ScoutStarted>
   <WTS_AlreadyScouting>Разведка {0} уже идёт.</WTS_AlreadyScouting>
+  <WTS_ScoutCapacityFull>Лимит разведки ({0}/{1}). Нужно больше колонистов (сейчас {2}) или дождаться отчёта.</WTS_ScoutCapacityFull>
+  <WTS_ScoutCapacityStatus>Одновременных разведок: {0}/{1} (колонистов: {2})</WTS_ScoutCapacityStatus>
+  <WTS_SettingsCategory>World Tile Scouting</WTS_SettingsCategory>
+  <WTS_ColonistsPerSlot>Колонистов на один слот разведки: {0}</WTS_ColonistsPerSlot>
+  <WTS_ColonistsPerSlotTip>Макс. одновременных разведок = ceil(колонисты ÷ {0}). Сейчас: {1} слот(ов) при {2} колонист(ах). Минимум 1.</WTS_ColonistsPerSlotTip>
+  <WTS_ResetDefaults>Сбросить по умолчанию</WTS_ResetDefaults>
   <WTS_IntelAlreadyFresh>Актуальная разведка по {0} уже есть.</WTS_IntelAlreadyFresh>
   <WTS_ScoutFailedGone>Разведка {0} сорвалась — цель исчезла.</WTS_ScoutFailedGone>
   <WTS_ScoutFailedChanged>Разведка {0} сорвалась — данные объекта изменились.</WTS_ScoutFailedChanged>
